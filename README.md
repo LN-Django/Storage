@@ -45,22 +45,22 @@ Heroku is a cloud platform (PaaS) to build and deploy the application ([Heroku d
 
 Building the image
 ```
-docker build -t registry.heroku.com/intense-reef-35485/web .
+docker build -t registry.heroku.com/gentle-plateau-18834/web .
 ```
 
 Push the Docker container
 ```
-docker push registry.heroku.com/intense-reef-35485/web 
+docker push registry.heroku.com/gentle-plateau-18834/web 
 ```
 
 Release the image
 ```
-heroku container:release -a intense-reef-35485 web
+heroku container:release -a gentle-plateau-18834 web
 ```
 
 ## Demo
 
-**Staging**: https://intense-reef-35485.herokuapp.com/api/v1/swagger
+**Staging**: https://gentle-plateau-18834.herokuapp.com/api/v1/swagger
 
 ~~**Production**: https://enigmatic-dusk-38395.herokuapp.com/api/v1/swagger~~
 **Note: We discontinued the production environment**
