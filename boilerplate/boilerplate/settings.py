@@ -1,3 +1,4 @@
+import dj_database_url
 from os import environ, path
 from pathlib import Path
 from dotenv import load_dotenv
@@ -23,7 +24,12 @@ INSTALLED_APPS = [
     'restapi',
     'rest_framework',
     'drf_yasg',
+    'storage_service'
 ]
+
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -67,6 +73,11 @@ DATABASES = {
     }
 }
 
+DATABASE_URL = environ.get('DATABASE_URL')
+db_from_env = dj_database_url.config(
+    default=DATABASE_URL, conn_max_age=500, ssl_require=True)
+DATABASES['default'].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -109,3 +120,37 @@ STATIC_ROOT = path.join(BASE_DIR, "static")
 MEDIA_ROOT = path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging
+# note: Copied from https://stackoverflow.com/questions/18920428/django-logging-on-heroku
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': ('DJANGO LOGGER %(asctime)s [%(levelname)s]' +
+                       ' \npathname=%(pathname)s lineno=%(lineno)s' +
+                       ' \nfuncname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+            'formatter': 'verbose'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        'mainLogger': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'formatter': 'verbose'
+        }
+    }
+}
