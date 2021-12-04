@@ -31,7 +31,6 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('restapi.urls')),
     url(r'', include('storage_service.urls')),
     url(r'^swagger(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0), name='schema-json'),
