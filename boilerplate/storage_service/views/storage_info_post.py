@@ -12,6 +12,7 @@ from drf_yasg.utils import swagger_auto_schema
 from .const import product_properties
 from ..serializers import ProductSerializer
 from ..services import StorageInfoService
+from ..exceptions import NotUniqueError
 
 
 class StorageInfoPostView(APIView):
@@ -51,3 +52,6 @@ class StorageInfoPostView(APIView):
         except ValidationError as error:
             self.logger.info('Validation error while creating product')
             return Response({'message': 'Bad request: validation error', 'errors': error}, status=400)
+        except NotUniqueError as error:
+            self.logger.info('Non unique error while posting storage info')
+            return Response({'message': 'Bad request: Info of the product with the product id {:d} already exists'.format(request_data['product_id'])}, status=400)
