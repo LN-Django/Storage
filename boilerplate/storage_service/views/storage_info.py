@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
-from .const import product_properties
+from .const import product_properties_storage
 from ..exceptions import NotFoundError, NotUniqueError
 from ..services import StorageInfoService
 
@@ -23,7 +23,7 @@ class StorageInfoView(APIView):
     @swagger_auto_schema(responses={
         '200': openapi.Schema(
             type=openapi.TYPE_OBJECT,
-            properties=product_properties),
+            properties=product_properties_storage),
         '404': openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={

@@ -1,7 +1,11 @@
 from typing import Dict
 
-from .models import Product
+from pandas.core.indexes import category
+
+from .models import CompleteProduct, Product
 from .exceptions import NotFoundError, NotUniqueError
+
+import csv
 
 
 class StorageInfoService():
@@ -31,3 +35,33 @@ class StorageInfoService():
             raise NotUniqueError()
 
         return queryset.values()[0]
+
+    def importCSV(path):
+        with open(path) as f:
+            reader = csv.reader(f, delimiter=",")
+            for row in reader:
+                product, created = CompleteProduct.objects.get_or_create(
+                    product_id=row['id'],
+                    name=row['name'],
+                    base_price=row['base_price'],
+                    description=row['description'],
+                    location=row['location'],
+                    delivery_time=row['delivery_time'],
+                    amount=row['amount'],
+                    weight=row['weight'],
+                    category=row['category'],
+                )
+                # product = CompleteProduct()
+                # product.product_id=row['id']
+                # product.name=row['name']
+                # product.base_price=row['base_price']
+                # product.description=row['description']
+                # product.location=row['location']
+                # product.delivery_time=row['delivery_time']
+                # product.amount=row['amount']
+                # product.weight=row['weight']
+                # product.category=row['category']
+                # product.save()
+        f.close()
+                    
+                
