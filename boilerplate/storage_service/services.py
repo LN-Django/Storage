@@ -1,7 +1,5 @@
 from typing import Dict
 
-from pandas.core.indexes import category
-
 from .models import CompleteProduct, Product
 from .exceptions import NotFoundError, NotUniqueError
 
@@ -51,17 +49,7 @@ class StorageInfoService():
                     weight=row['weight'],
                     category=row['category'],
                 )
-                # product = CompleteProduct()
-                # product.product_id=row['id']
-                # product.name=row['name']
-                # product.base_price=row['base_price']
-                # product.description=row['description']
-                # product.location=row['location']
-                # product.delivery_time=row['delivery_time']
-                # product.amount=row['amount']
-                # product.weight=row['weight']
-                # product.category=row['category']
-                # product.save()
+                product.save()
         f.close()
                     
                 
