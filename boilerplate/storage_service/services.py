@@ -35,6 +35,9 @@ class StorageInfoService():
         return queryset.values()[0]
 
     def importCSV(path):
+        '''
+        Method to import csv file to models
+        '''
         with open(path) as f:
             reader = csv.reader(f, delimiter=",")
             for row in reader:
@@ -49,7 +52,10 @@ class StorageInfoService():
                     weight=row['weight'],
                     category=row['category'],
                 )
-                product.save()
+                if created:
+                    product.save()
+                else:
+                    return created
         f.close()
                     
                 

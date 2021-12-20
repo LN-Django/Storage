@@ -23,4 +23,4 @@ class CompleteProduct(Product):
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        return super(Product, self).save(*args, **kwargs)
+        return super(CompleteProduct, self).save(*args, **kwargs)
