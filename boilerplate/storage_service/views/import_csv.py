@@ -16,7 +16,10 @@ class ImportCsvView(APIView):
     permission_classes = [permissions.AllowAny]
 
     @swagger_auto_schema(request_body=openapi.Schema(
-        type=openapi.TYPE_FILE,
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'text': openapi.Schema(type=openapi.TYPE_STRING, description='csv text'),
+        }
         
     ), responses={
         '200': openapi.Schema(
@@ -30,14 +33,14 @@ class ImportCsvView(APIView):
             },
             description='Internal server error'
         )
-    }
+    },
+        operation_description='Import product data from a csv text. This operation will overwrite existing products'
     )
     
     def post(self, request):
-        csv_data = request.data
-        try:
-            validate_csv_file(csv_data)
-        except ValidationError:
-            self.logger.info('file is not in CSV format')
-            return Response({'message: failed to import csv file'}, status=500)
-        return Response(StorageInfoService.importCSV(csv_data))
+        key = 'text'
+        if key in request.data:
+            csv_data = request.data[key]      
+            return Response(StorageInfoService.importCSV(csv_data))
+        else:
+            return Response({'message': 'Bad request: request body is missing'}, status=400)

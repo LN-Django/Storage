@@ -3,7 +3,9 @@ from typing import Dict
 from .models import CompleteProduct, Product
 from .exceptions import NotFoundError, NotUniqueError
 
+from io import StringIO
 import csv
+from django.forms.models import model_to_dict
 
 
 class StorageInfoService():
@@ -34,28 +36,33 @@ class StorageInfoService():
 
         return queryset.values()[0]
 
-    def importCSV(path):
+    def importCSV(str):
         '''
-        Method to import csv file to models
+        Method to import csv string to models
         '''
-        with open(path) as f:
-            reader = csv.reader(f, delimiter=",")
-            for row in reader:
-                product, created = CompleteProduct.objects.get_or_create(
-                    product_id=row['id'],
-                    name=row['name'],
-                    base_price=row['base_price'],
-                    description=row['description'],
-                    location=row['location'],
-                    delivery_time=row['delivery_time'],
-                    amount=row['amount'],
-                    weight=row['weight'],
-                    category=row['category'],
-                )
-                if created:
-                    product.save()
-                else:
-                    return created
+        products = []
+        f = StringIO(str)
+        reader = csv.reader(f, delimiter=",")
+        CompleteProduct.objects.all().delete()
+        for row in reader:
+            product, created = CompleteProduct.objects.get_or_create(
+                product_id=row[0],
+                name=row[1],
+                base_price=row[2],
+                description=row[3],
+                location=row[4],
+                delivery_time=row[5],
+                amount=row[6],
+                weight=row[7],
+                category=row[8],
+            )
+            if created:
+                product.save()
+                product_dict = model_to_dict(product)
+                products.append(product_dict)
+            else:
+                return created
         f.close()
+        return products
                     
                 
