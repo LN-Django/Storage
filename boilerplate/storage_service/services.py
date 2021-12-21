@@ -1,7 +1,11 @@
 from typing import Dict
 
-from .models import Product
+from .models import CompleteProduct, Product
 from .exceptions import NotFoundError, NotUniqueError
+
+from io import StringIO
+import csv
+from django.forms.models import model_to_dict
 
 
 class StorageInfoService():
@@ -31,3 +35,34 @@ class StorageInfoService():
             raise NotUniqueError()
 
         return queryset.values()[0]
+
+    def importCSV(str):
+        '''
+        Method to import csv string to models
+        '''
+        products = []
+        f = StringIO(str)
+        reader = csv.reader(f, delimiter=",")
+        CompleteProduct.objects.all().delete()
+        for row in reader:
+            product, created = CompleteProduct.objects.get_or_create(
+                product_id=row[0],
+                name=row[1],
+                base_price=row[2],
+                description=row[3],
+                location=row[4],
+                delivery_time=row[5],
+                amount=row[6],
+                weight=row[7],
+                category=row[8],
+            )
+            if created:
+                product.save()
+                product_dict = model_to_dict(product)
+                products.append(product_dict)
+            else:
+                return created
+        f.close()
+        return products
+                    
+                
