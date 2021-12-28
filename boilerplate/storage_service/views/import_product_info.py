@@ -39,6 +39,9 @@ class ImportProductInfo(APIView):
         key = 'text'
         if key in request.data:
             csv_data = request.data[key]      
-            return Response(StorageInfoService.importProductInfoCSV(csv_data))
+            response = StorageInfoService.importCSV(csv_data)
+            if response == 400:
+                return Response({'message': 'Bad request: bad csv file'}, status=400)      
+            return Response(response)
         else:
             return Response({'message': 'Bad request: request body is missing'}, status=400)
