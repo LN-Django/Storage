@@ -38,13 +38,16 @@ class StorageInfoService():
 
     def importCSV(str):
         '''
-        Method to import csv string to models
+        Method to import a csv string of all product info to models
         '''
         products = []
         f = StringIO(str)
         reader = csv.reader(f, delimiter=",")
         CompleteProduct.objects.all().delete()
         for row in reader:
+            if len(row) != 9:
+                return 400
+
             product, created = CompleteProduct.objects.get_or_create(
                 product_id=row[0],
                 name=row[1],
@@ -55,6 +58,33 @@ class StorageInfoService():
                 amount=row[6],
                 weight=row[7],
                 category=row[8],
+            )
+            if created:
+                product.save()
+                product_dict = model_to_dict(product)
+                products.append(product_dict)
+            else:
+                return created
+        f.close()
+        return products
+
+    def importProductInfoCSV(str):
+        '''
+        Method to import a csv string of product storage info to models
+        '''
+        products = []
+        f = StringIO(str)
+        reader = csv.reader(f, delimiter=",")
+        Product.objects.all().delete()
+        for row in reader:
+            if len(row) != 4:
+                return 400
+
+            product, created = Product.objects.get_or_create(
+                product_id=row[0],
+                location=row[1],
+                delivery_time=row[2],
+                amount=row[3],
             )
             if created:
                 product.save()
