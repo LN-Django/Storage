@@ -43,10 +43,12 @@ class StorageInfoService():
         products = []
         f = StringIO(str)
         reader = csv.reader(f, delimiter=",")
-        CompleteProduct.objects.all().delete()
+        
         for row in reader:
             if len(row) != 9:
                 return 400
+
+            CompleteProduct.objects.filter(product_id=row[0]).delete()
 
             product, created = CompleteProduct.objects.get_or_create(
                 product_id=row[0],
@@ -75,10 +77,12 @@ class StorageInfoService():
         products = []
         f = StringIO(str)
         reader = csv.reader(f, delimiter=",")
-        Product.objects.all().delete()
+        
         for row in reader:
             if len(row) != 4:
                 return 400
+
+            Product.objects.filter(product_id=row[0]).delete()
 
             product, created = Product.objects.get_or_create(
                 product_id=row[0],

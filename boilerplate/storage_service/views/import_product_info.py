@@ -32,14 +32,14 @@ class ImportProductInfo(APIView):
             description='Internal server error'
         )
     },
-        operation_description='Import product storage info from a csv text. This operation will overwrite existing products'
+        operation_description='Import product storage info from a csv text. This operation will overwrite existing products with the same product_id'
     )
     
     def post(self, request):
         key = 'text'
         if key in request.data:
             csv_data = request.data[key]      
-            response = StorageInfoService.importCSV(csv_data)
+            response = StorageInfoService.importProductInfoCSV(csv_data)
             if response == 400:
                 return Response({'message': 'Bad request: bad csv file'}, status=400)      
             return Response(response)
