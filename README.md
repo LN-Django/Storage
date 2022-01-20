@@ -1,5 +1,5 @@
-# boilerplate
-Django + REST boilerplate for future services
+# Storage
+Storage service to store storage-related information. 
 
 ## Running the App Locally
 To run the dev server please run the following command.
@@ -45,22 +45,22 @@ Heroku is a cloud platform (PaaS) to build and deploy the application ([Heroku d
 
 Building the image
 ```
-docker build -t registry.heroku.com/gentle-plateau-18834/web .
+docker build -t registry.heroku.com/peaceful-wave-28166/web .
 ```
 
 Push the Docker container
 ```
-docker push registry.heroku.com/gentle-plateau-18834/web 
+docker push registry.heroku.com/peaceful-wave-28166/web 
 ```
 
 Release the image
 ```
-heroku container:release -a gentle-plateau-18834 web
+heroku container:release -a peaceful-wave-28166 web
 ```
 
 ## Demo
 
-**Staging**: https://gentle-plateau-18834.herokuapp.com/api/v1/swagger
+**Staging**: https://peaceful-wave-28166.herokuapp.com/api/v1/swagger
 
 ~~**Production**: https://enigmatic-dusk-38395.herokuapp.com/api/v1/swagger~~
 **Note: We discontinued the production environment**
